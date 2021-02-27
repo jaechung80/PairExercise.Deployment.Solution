@@ -3,17 +3,24 @@ const pkg = require('../../package.json');
 const dbName = process.env.NODE_ENV === 'test' ? `${pkg.name}-test` : pkg.name;
 const dbUrl =
   process.env.DATABASE_URL || `postgres://localhost:5432/${dbName}?ssl=true`;
-const pg = require('pg');
-pg.defaults.ssl = true;
-const client = new Sequelize(dbUrl, {
-  logging: false,
-  operatorsAliases: false,
-  dialect: 'postgres',
-  dialectOptions: {
+let config;
+if (process.env.DATABASE_URL) {
+  config = {
+    logging: false,
     ssl: true,
-    rejectUnauthorized: false,
-  },
-});
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  };
+} else {
+  config = {
+    logging: false,
+  };
+}
+const client = new Sequelize(dbUrl, config);
 
 module.exports = client;
 
