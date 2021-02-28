@@ -1,28 +1,25 @@
 language: node_js
 node_js:
-  - 12 # uses version 12
+- 12
 services:
-  - postgresql # starts up postgres
+- postgresql
 addons:
-  postgresql: '9.6' # highest available postgres version on Travis
-dist: trusty # uses trusty environment
-sudo: false # when on trusty, uses Docker containers for speed
+  postgresql: '9.6'
+dist: trusty
+sudo: false
 notifications:
   email:
-    on_success: change # default: change (only when going from broken to fixed)
-    on_failure: always # default: always (which is annoying, as it should be)
+    on_success: change
+    on_failure: always
 install:
-  - npm ci # faster, goes only from package-lock
+- npm ci
 before_script:
-  - psql -c 'create database "deployment-exercise-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-before_deploy: # omit node_modules, since we set skip_cleanup below
-  - rm -rf node_modules
-deploy: # see README for details on these keys
-  # prevents travis from deleting the build
+- psql -c 'create database "deployment-exercise-test";' -U postgres
+before_deploy:
+- rm -rf node_modules
+deploy:
   skip_cleanup: true
   provider: heroku
-  # app should be your heroku app name; see README
   app: aqueous-woodland-82460
-  # the secure key indicates an encrypted value; see README
   api_key:
-    secure: jfqtkabzW2m0E1/KCSsNXlSBoTDbr9IV6ZuXJUp90MYMNeq3X+3VupOzescD4tHEOCHw7zPHUHEQchDATL7YwF96FpgOouFaCTN9C+awtTui4cArCDGF3ZNuuRbyoRW7ABbncdw97Ht0CCiNaE2E1nL5rFZYB4mjS/rS8WEnDYj1NKNnHYyNjnL34uyKHlt2D1dGd13uM9mbRy2qO5vIxm6ne9s8H4PgbJF9CEbSa4ii2kjWKE2h2xoANyUQEH8N1oRlKEGGC7Vh0zqS20SYIJIOPQm9iwoxgLJipPJ7ZG/jMgXHc8J8qSaFDdZQdM5qYJjvAdJ+xbxXTXZv7PWwGEx9ZPtsyAAMMCq4dt1YBeQ0IwzMMnwMnRMYlzjElSPXulXJrtpf8noMy04I8APUIAnnJjQciA/MDBor9RymCAGDx5Fp4RNbT3hrEsFQXob/ukB7ErV6Xb6KQjSj2aAHvE5oCSP9NonMPpMbyNW328qHrRsY5i7CV089tqdVRd1u//F5HpP5kEv57vKs53IR9wCUYqFzV53kDEbsrBJvkWWrX96HEQZQgNdCw30A5rTMU5kf9yoc0FrsaShU4j92+wsiC5KLtZLs1XTM5fDyROtcfD/jW7BUVo+OT4U6LcsVxpag2ZFcnJ38j43AW32rUZ2dHLKEPXYoXOAJeGc9OhM=
+    secure: Y+cFKXZYmq5vzp6lQyFpSNPUGbJsjyjYlTL6B7qPheCbvnBLzGHpYmEeNuc+LDef63F0MOxYsGX2p5JPYC9hDxYmDsFNCEtqtyohrDflySjZTtJrry9i1mdBwjsxaNp/NwP3LgikmXsXYJsdcTbYqZwZaCw/GeXLedd93UmMzFZB29QAGaJ9hgjkcaUqKsBCe4mtN/ealfj5hFu02Zz1QZvp/Fn7CvN+8ZmsZbipAAecUErqQUVWjTeZVDDUQd0zv5UZTQnh1Yiif704e6ZeXnMLIsLnzO/pzvRKdVRUe1gJNPn8p/RkAkOtMKJ7IgC/V2rueA7PY76QtG/2qxlSp4IGovQUpA/YKRHUmwvSSfPqwNZA4EAHGg/3FhGnMp3YrvF42gsQZV4nyQJy3opLeQzBKrlRL9ZSletV7z/14NGzX6LjIcOX7QqqcT5Y0E6K4ktSQZhyRxhIKwIAYyLYVpDa8aEaOcwsr4YeGoC9LuNDImGo6glKzHFzJis1eyOD9bnUcRXek8kPXdABIhF24ucrv+0nVKEcGzqqHUnkF+V7crNXKhu3GZPjB5jZbw7qM5Xl71PDkefib8TCtBsqrPeb8O3dOgcVDg+BMBSXY01JdTGQ4bEhgMrTJ92gjI0Bw6Hhh7Z9D47sPR8xwOE9DVJe5bMmcQHSFbb/iaXfyL0=
