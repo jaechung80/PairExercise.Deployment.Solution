@@ -15,13 +15,14 @@ install:
   - npm ci # faster, goes only from package-lock
 before_script:
   - psql -c 'create database "deployment-exercise-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: aqueous-woodland-82460
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: jfqtkabzW2m0E1/KCSsNXlSBoTDbr9IV6ZuXJUp90MYMNeq3X+3VupOzescD4tHEOCHw7zPHUHEQchDATL7YwF96FpgOouFaCTN9C+awtTui4cArCDGF3ZNuuRbyoRW7ABbncdw97Ht0CCiNaE2E1nL5rFZYB4mjS/rS8WEnDYj1NKNnHYyNjnL34uyKHlt2D1dGd13uM9mbRy2qO5vIxm6ne9s8H4PgbJF9CEbSa4ii2kjWKE2h2xoANyUQEH8N1oRlKEGGC7Vh0zqS20SYIJIOPQm9iwoxgLJipPJ7ZG/jMgXHc8J8qSaFDdZQdM5qYJjvAdJ+xbxXTXZv7PWwGEx9ZPtsyAAMMCq4dt1YBeQ0IwzMMnwMnRMYlzjElSPXulXJrtpf8noMy04I8APUIAnnJjQciA/MDBor9RymCAGDx5Fp4RNbT3hrEsFQXob/ukB7ErV6Xb6KQjSj2aAHvE5oCSP9NonMPpMbyNW328qHrRsY5i7CV089tqdVRd1u//F5HpP5kEv57vKs53IR9wCUYqFzV53kDEbsrBJvkWWrX96HEQZQgNdCw30A5rTMU5kf9yoc0FrsaShU4j92+wsiC5KLtZLs1XTM5fDyROtcfD/jW7BUVo+OT4U6LcsVxpag2ZFcnJ38j43AW32rUZ2dHLKEPXYoXOAJeGc9OhM=
